@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    hmtt
+    <router-view />
   </div>
 </template>
 
