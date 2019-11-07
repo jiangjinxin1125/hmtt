@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import local from '@/utils/local'
 export default {
   data () {
     const checkMobile = (rule, value, callback) => {
@@ -42,8 +43,8 @@ export default {
     }
     return {
       loginForm: {
-        mobile: '',
-        code: ''
+        mobile: '13911111111',
+        code: '246810'
       },
       loginRules: {
         mobile: [
@@ -68,13 +69,21 @@ export default {
   },
   methods: {
     login () {
-      this.$refs['loginForm'].validate((valid) => {
+      this.$refs['loginForm'].validate(async valid => {
         if (valid) {
-          this.$http.post('authorizations', this.loginForm).then(res => {
+          // this.$http.post('authorizations', this.loginForm).then(res => {
+          //   local.setUser(res.data.data)
+          //   this.$router.push('/')
+          // }).catch(() => {
+          //   this.$message.error('手机号或验证码错误')
+          // })
+          try {
+            const { data: { data } } = await this.$http.post('authorizations', this.loginForm)
+            local.setUser(data)
             this.$router.push('/')
-          }).catch(() => {
+          } catch (e) {
             this.$message.error('手机号或验证码错误')
-          })
+          }
         }
       })
     }
